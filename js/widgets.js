@@ -1,4 +1,4 @@
-/* WebLightroom — custom widgets: Tone Curve editor, Color Grading wheel. */
+/* Stopbath — custom widgets: Tone Curve editor, Color Grading wheel. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
@@ -147,7 +147,7 @@
       if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
       const x = cv.getContext('2d');
       x.setTransform(dpr, 0, 0, dpr, 0, 0);
-      x.fillStyle = '#1c1c1c';
+      x.fillStyle = LR.THEME.canvasBg;
       x.fillRect(0, 0, W, H);
       const s = this.hooks.settings && this.hooks.settings();
       if (!s) return;
@@ -174,7 +174,7 @@
           x.fillRect((bounds[reg][0] / 100) * W, 0, ((bounds[reg][1] - bounds[reg][0]) / 100) * W, H);
         }
       }
-      x.strokeStyle = 'rgba(255,255,255,0.09)';
+      x.strokeStyle = LR.THEME.canvasGrid;
       x.lineWidth = 1;
       x.beginPath();
       for (let i = 1; i < 4; i++) {

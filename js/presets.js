@@ -1,4 +1,4 @@
-/* WebLightroom — extended built-in preset library.
+/* Stopbath — extended built-in preset library.
  * Creative looks are defined once and generated in three strengths (Light / normal / Strong).
  * Looks set the whole "look" (tone, presence, curve, color, grading, effects) so they don't stack
  * unpredictably; utility presets in the "Basic" groups only touch the settings they name.

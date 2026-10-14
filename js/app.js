@@ -1,4 +1,4 @@
-/* WebLightroom — application shell: layout, module switching, filmstrip, menus, keyboard shortcuts. */
+/* Stopbath — application shell: layout, module switching, filmstrip, menus, keyboard shortcuts. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
@@ -12,7 +12,7 @@
       try {
         this.viewer = new LR.Viewer();
       } catch (e) {
-        document.body.innerHTML = '<div class="fatal">WebLightroom needs a browser with WebGL2 support (Chrome, Edge, Firefox, Safari 15+).<br><small>' + LR.escapeHtml(e.message) + '</small></div>';
+        document.body.innerHTML = '<div class="fatal">Stopbath needs a browser with WebGL2 support (Chrome, Edge, Firefox, Safari 15+).<br><small>' + LR.escapeHtml(e.message) + '</small></div>';
         return;
       }
       this.viewer.onHistogram = (px) => {
@@ -35,14 +35,17 @@
 
     buildLayout() {
       this.moduleLinks = {};
-      const mod = (id, label) => (this.moduleLinks[id] = h('a.module', { text: label, onclick: () => this.setModule(id) }));
+      const mod = (id, idx, label) => (this.moduleLinks[id] = h('a.module', { onclick: () => this.setModule(id) }, h('span.mod-idx', { text: idx }), h('span.mod-name', { text: label })));
       const menus = [
         ['File', () => this.fileMenu()], ['Edit', () => this.editMenu()], ['Photo', () => this.photoMenu()],
         ['Develop', () => this.developMenu()], ['View', () => this.viewMenu()], ['Help', () => this.helpMenu()],
       ].map(([l, fn]) => h('button.menu-btn', { text: l, onclick: (e) => { const r = e.target.getBoundingClientRect(); LR.UI.menu(r.left, r.bottom + 2, fn()); } }));
       this.topbar = h('header.topbar', null,
-        h('div.identity', null, h('div.id-logo', { text: 'WebLightroom' }), h('div.menubar', null, menus)),
-        h('nav.modules', null, mod('library', 'Library'), h('span.mod-sep', { text: '|' }), mod('develop', 'Develop')));
+        h('div.identity', null,
+          h('div.brand', { title: LR.APP_NAME }, h('span.brand-mark'), h('span.brand-name', { text: LR.APP_NAME }), h('span.brand-tag', { text: 'LAB' })),
+          h('div.menubar', null, menus)),
+        h('nav.modules', null, mod('library', '01', 'Library'), mod('develop', '02', 'Develop')),
+        h('div.status', null, h('span.status-dot'), h('span', { text: 'GPU · WEBGL2' })));
       this.leftSlot = h('aside.side.left');
       this.rightSlot = h('aside.side.right');
       this.centerTop = h('div.center-top');
@@ -81,7 +84,7 @@
       v.before = false;
       v.split = false;
       v.clickZoom = true;
-      v.bgColor = mod === 'develop' ? [0.137, 0.137, 0.137] : [0.137, 0.137, 0.137];
+      v.bgColor = LR.THEME.viewBg;
       const swap = (slot, el) => { if (slot.firstChild !== el) { slot.innerHTML = ''; if (el) slot.appendChild(el); } };
       this.centerTop.innerHTML = '';
       if (mod === 'library') {
@@ -154,7 +157,7 @@
         const img = h('img', { alt: '', draggable: false });
         if (url) img.src = url;
         const c = h('div.fs-cell' + (p.label ? '.label-' + p.label : '') + (p.flag === -1 ? '.rejected' : ''), { dataset: { id: p.id }, title: p.name }, img,
-          p.rating ? h('div.fs-stars', { text: '★'.repeat(p.rating) }) : null,
+          p.rating ? h('div.fs-stars', { text: '■'.repeat(p.rating) }) : null,
           p.flag === 1 ? h('div.fs-flag', null, icon('flag')) : null,
           p.edited ? h('div.fs-edit', null, icon('edited')) : null);
         c.addEventListener('click', (e) => Catalog.clickSelect(p.id, e));
@@ -190,7 +193,7 @@
     renderStars(el, p) {
       el.innerHTML = '';
       if (!p) return;
-      for (let i = 1; i <= 5; i++) el.appendChild(h('span.tstar' + (i <= p.rating ? '.on' : ''), { text: '★', title: i + ' star' + (i > 1 ? 's' : ''), onclick: () => Catalog.setRating(p.rating === i ? 0 : i) }));
+      for (let i = 1; i <= 5; i++) el.appendChild(h('span.tstar' + (i <= p.rating ? '.on' : ''), { text: '■', title: i + ' star' + (i > 1 ? 's' : ''), onclick: () => Catalog.setRating(p.rating === i ? 0 : i) }));
     },
     renderFlags(el, p) {
       el.innerHTML = '';

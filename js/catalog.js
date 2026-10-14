@@ -1,4 +1,4 @@
-/* WebLightroom — catalog: photos, selection, filtering, import, thumbnails, collections. */
+/* Stopbath — catalog: photos, selection, filtering, import, thumbnails, collections. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});

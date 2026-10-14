@@ -1,4 +1,4 @@
-/* WebLightroom — WebGL2 rendering engine.
+/* Stopbath — WebGL2 rendering engine.
  * Non-destructive pipeline: geometry (orientation, flip, crop, rotation, lens distortion)
  * -> noise reduction -> white balance -> exposure -> dehaze -> tone (contrast, highlights,
  * shadows, whites, blacks) -> clarity/texture -> presence -> tone curve -> HSL / B&W

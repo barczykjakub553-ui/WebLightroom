@@ -1,4 +1,4 @@
-/* WebLightroom — catalog persistence (IndexedDB). */
+/* Stopbath — catalog persistence (IndexedDB). */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});

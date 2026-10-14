@@ -1,4 +1,4 @@
-/* WebLightroom — RGB histogram panel. */
+/* Stopbath — RGB histogram panel. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
@@ -46,14 +46,14 @@
       if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
       const x = cv.getContext('2d');
       x.setTransform(dpr, 0, 0, dpr, 0, 0);
-      x.fillStyle = '#1a1a1a';
+      x.fillStyle = LR.THEME.canvasBg;
       x.fillRect(0, 0, W, H);
-      x.strokeStyle = 'rgba(255,255,255,0.07)';
+      x.strokeStyle = LR.THEME.canvasGrid;
       x.lineWidth = 1;
       for (let i = 1; i < 4; i++) { x.beginPath(); x.moveTo(Math.round((W * i) / 4) + 0.5, 0); x.lineTo(Math.round((W * i) / 4) + 0.5, H); x.stroke(); }
       if (!this.bins) return;
       const { r, g, b, total } = this.bins;
-      // scale: ignore extreme spikes at ends (like Lightroom)
+      // scale: ignore extreme spikes at ends (spikes at the ends would flatten the graph)
       let max = 0;
       for (let i = 2; i < 254; i++) max = Math.max(max, r[i], g[i], b[i]);
       max = Math.max(max, total / 256) * 1.08;

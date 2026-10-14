@@ -1,7 +1,16 @@
-/* WebLightroom — UI helpers: DOM builder, sliders, panels, dialogs, menus, toasts, event bus. */
+/* Stopbath — UI helpers: DOM builder, sliders, panels, dialogs, menus, toasts, event bus. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
+
+  /* ---------- brand & theme (keep in sync with :root in css/styles.css) ---------- */
+  LR.APP_NAME = 'Stopbath';
+  LR.THEME = {
+    accent: '#ff5b1f',
+    viewBg: [0.051, 0.051, 0.055], // viewer background (linear 0..1 RGB)
+    canvasBg: '#0b0b0c', // histogram / curve backgrounds
+    canvasGrid: 'rgba(255,255,255,0.07)',
+  };
 
   /* ---------- event bus ---------- */
   const handlers = {};
@@ -220,7 +229,7 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toastEl.classList.remove('show'), ms || 1600);
   }
-  /** Large centered overlay message like Lightroom's "Rating set to 3". */
+  /** Large centered overlay message (e.g. "Rating set to 3"). */
   let hudEl, hudTimer;
   function hud(msg) {
     if (!hudEl) { hudEl = h('div.hud'); document.body.appendChild(hudEl); }

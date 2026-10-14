@@ -1,4 +1,4 @@
-/* WebLightroom — Export dialog & renderer. */
+/* Stopbath — Export dialog & renderer. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});

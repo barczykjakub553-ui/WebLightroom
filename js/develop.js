@@ -1,4 +1,4 @@
-/* WebLightroom — Develop module. */
+/* Stopbath — Develop module. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});

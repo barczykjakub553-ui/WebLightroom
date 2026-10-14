@@ -1,4 +1,4 @@
-/* WebLightroom — Library module: grid, loupe, catalog/collections, quick develop, keywords, metadata. */
+/* Stopbath — Library module: grid, loupe, catalog/collections, quick develop, keywords, metadata. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
@@ -220,7 +220,7 @@
         ro('File Name', p.name + (p.virtualCopy ? ' (' + p.copyName + ')' : '')),
         editable('Title', 'title'),
         editable('Caption', 'caption'),
-        ro('Rating', p.rating ? '★'.repeat(p.rating) : '—'),
+        ro('Rating', p.rating ? '■'.repeat(p.rating) : '—'),
         ro('Label', p.label ? p.label[0].toUpperCase() + p.label.slice(1) : '—'),
         ro('Dimensions', p.width + ' × ' + p.height),
         ro('Cropped', p.settings.crop ? Math.round(p.settings.crop.w * Math.max(p.width, p.height)) + ' × ' + Math.round(p.settings.crop.h * Math.max(p.width, p.height)) : ''),
@@ -255,7 +255,7 @@
       const stars = h('span.filter-stars');
       const drawStars = () => {
         stars.innerHTML = '';
-        for (let i = 1; i <= 5; i++) stars.appendChild(h('span.fstar' + (i <= f.rating ? '.on' : ''), { text: '★', onclick: () => { f.rating = f.rating === i ? 0 : i; drawStars(); this.renderAll(); } }));
+        for (let i = 1; i <= 5; i++) stars.appendChild(h('span.fstar' + (i <= f.rating ? '.on' : ''), { text: '■', onclick: () => { f.rating = f.rating === i ? 0 : i; drawStars(); this.renderAll(); } }));
       };
       drawStars();
       const labels = h('span.filter-labels');
@@ -336,7 +336,7 @@
       const stars = h('div.cell-stars');
       for (let i = 1; i <= 5; i++) {
         stars.appendChild(h('span.cstar' + (i <= p.rating ? '.on' : ''), {
-          text: i <= p.rating ? '★' : '·',
+          text: i <= p.rating ? '■' : '□',
           onclick: (e) => { e.stopPropagation(); if (!S.selected.has(p.id)) Catalog.clickSelect(p.id, null); Catalog.setRating(p.rating === i ? 0 : i); },
         }));
       }

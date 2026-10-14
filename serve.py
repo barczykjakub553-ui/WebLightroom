@@ -1,4 +1,4 @@
-"""Minimal static server for WebLightroom: python serve.py [port]"""
+"""Minimal static server for Stopbath: python serve.py [port]"""
 import http.server
 import socketserver
 import sys
@@ -16,5 +16,5 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 socketserver.TCPServer.allow_reuse_address = True
 with socketserver.ThreadingTCPServer(("127.0.0.1", PORT), Handler) as httpd:
-    print(f"WebLightroom running at http://localhost:{PORT}")
+    print(f"Stopbath running at http://localhost:{PORT}")
     httpd.serve_forever()

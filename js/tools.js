@@ -1,4 +1,4 @@
-/* WebLightroom — interactive viewer tools: Crop & Straighten, Masking, White Balance picker. */
+/* Stopbath — interactive viewer tools: Crop & Straighten, Masking, White Balance picker. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
@@ -248,7 +248,7 @@
       }
       ctx.stroke();
       // corner brackets
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = LR.THEME.accent;
       ctx.lineWidth = 3 * dpr;
       const L = 18 * dpr;
       ctx.beginPath();
@@ -472,7 +472,7 @@
         // pin
         ctx.beginPath();
         ctx.arc(hs.c.x, hs.c.y, 6 * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = isSel ? '#2a8cff' : 'rgba(255,255,255,0.85)';
+        ctx.fillStyle = isSel ? LR.THEME.accent : 'rgba(255,255,255,0.85)';
         ctx.fill();
         ctx.lineWidth = 2 * dpr;
         ctx.strokeStyle = isSel ? '#fff' : 'rgba(0,0,0,0.7)';

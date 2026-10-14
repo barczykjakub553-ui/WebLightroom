@@ -1,6 +1,10 @@
-# WebLightroom
+# Stopbath
 
-Przeglądarkowy klon Adobe Lightroom Classic: katalog zdjęć i nieniszczący edytor („develop”) działający w całości na GPU (WebGL2). Nie ma zależności ani kroku budowania — to czysty HTML/CSS/JS.
+Katalog zdjęć i nieniszczący edytor („develop”) w przeglądarce, działający w całości na GPU (WebGL2). Nie ma zależności ani kroku budowania — to czysty HTML/CSS/JS.
+
+## Design
+
+Motyw „ciemnia / laboratorium”: grafitowa czerń, pomarańczowy akcent jak światło ciemniowe (`#ff5b1f`), ostre krawędzie, nagłówki w stylu DIN (Bahnschrift), odczyty w foncie monospace, numerowane panele, filmstrip z perforacją. Kolory są zdefiniowane w `:root` w `css/styles.css`, a kopia dla rysowania na canvasie jest w `LR.THEME` w `js/ui.js`. Nazwa aplikacji jest w `LR.APP_NAME`.
 
 ## Uruchomienie
 

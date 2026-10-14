@@ -1,4 +1,4 @@
-/* WebLightroom — develop settings model, tone curves, presets. */
+/* Stopbath — develop settings model, tone curves, presets. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});

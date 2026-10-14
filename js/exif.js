@@ -1,4 +1,4 @@
-/* WebLightroom — minimal EXIF reader for JPEG files. */
+/* Stopbath — minimal EXIF reader for JPEG files. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});

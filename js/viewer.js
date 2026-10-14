@@ -1,4 +1,4 @@
-/* WebLightroom — image viewer: GPU preview with zoom / pan, before-after, tool overlays. */
+/* Stopbath — image viewer: GPU preview with zoom / pan, before-after, tool overlays. */
 (function () {
   'use strict';
   const LR = (window.LR = window.LR || {});
@@ -120,7 +120,7 @@
       const dpr = window.devicePixelRatio || 1;
       const W = Math.max(1, Math.round(this.stage.clientWidth * dpr)), H = Math.max(1, Math.round(this.stage.clientHeight * dpr));
       if (this.glCanvas.width !== W || this.glCanvas.height !== H) { this.glCanvas.width = W; this.glCanvas.height = H; }
-      const bg = this.bgColor || [0.137, 0.137, 0.137];
+      const bg = this.bgColor || LR.THEME.viewBg;
       const common = { width: W, height: H, mode: this.mode, clipWarn: this.clipWarn, showMask: this.showMask, bg };
       const s = this.settings;
       if (this.split && this.mode !== 'crop') {
