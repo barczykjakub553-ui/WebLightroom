@@ -31,6 +31,40 @@
       this.setModule(S.photos.length ? startModule : 'library', startView);
       this.renderFilmstrip();
       document.body.classList.add('ready');
+      if (!LR.Account.onboarded) this.runOnboarding();
+    },
+
+    /* ---------- onboarding & account ---------- */
+    async runOnboarding(opts) {
+      const r = await LR.Onboarding.show(opts);
+      if (!r) return;
+      this.app.classList.toggle('hide-bottom', !r.filmstrip);
+      if (S.module === 'library' && S.libView !== r.libView) this.setModule('library', r.libView);
+      if (r.action === 'files') this.openImport();
+      else if (r.action === 'folder') this.openImport(true);
+      else if (r.action === 'samples') Catalog.importSamples();
+    },
+    accountMenu() {
+      const p = LR.Account.load() || {};
+      return [
+        { label: p.name || 'Guest', disabled: true },
+        p.email ? { label: p.email, disabled: true } : null,
+        '-',
+        { label: 'Edit Profile…', action: () => this.runOnboarding({ step: 'profile', dismissible: true, single: true }) },
+        { label: 'Replay Welcome Tour', action: () => this.runOnboarding({ dismissible: true }) },
+        { label: 'Sign Out of This Device…', action: () => this.signOut() },
+      ].filter(Boolean);
+    },
+    renderAccount() {
+      const p = LR.Account.load();
+      this.accountBtn.querySelector('.acct-initials').textContent = LR.Account.initials(p);
+      this.accountBtn.querySelector('.acct-name').textContent = (p && p.name) || 'Guest';
+      this.accountBtn.title = p && p.email ? p.name + ' · ' + p.email : 'Account';
+    },
+    async signOut() {
+      if (!(await LR.UI.confirm('Sign Out', 'Remove your profile from this browser? Your photos and edits are kept.', 'Sign Out'))) return;
+      LR.Account.clear();
+      this.runOnboarding();
     },
 
     buildLayout() {
@@ -45,7 +79,11 @@
           h('div.brand', { title: LR.APP_NAME }, h('span.brand-mark'), h('span.brand-name', { text: LR.APP_NAME }), h('span.brand-tag', { text: 'LAB' })),
           h('div.menubar', null, menus)),
         h('nav.modules', null, mod('library', '01', 'Library'), mod('develop', '02', 'Develop')),
-        h('div.status', null, h('span.status-dot'), h('span', { text: 'GPU · WEBGL2' })));
+        h('div.status', null, h('span.status-dot'), h('span', { text: 'GPU · WEBGL2' })),
+        (this.accountBtn = h('button.account', { 'aria-label': 'Account', onclick: (e) => { const r = this.accountBtn.getBoundingClientRect(); LR.UI.menu(r.right - 200, r.bottom + 2, this.accountMenu()); e.stopPropagation(); } },
+          h('span.acct-initials'), h('span.acct-name'))));
+      this.renderAccount();
+      LR.bus.on('profile', () => this.renderAccount());
       this.leftSlot = h('aside.side.left');
       this.rightSlot = h('aside.side.right');
       this.centerTop = h('div.center-top');
@@ -334,7 +372,10 @@
       ];
     },
     helpMenu() {
-      return [{ label: 'Keyboard Shortcuts', shortcut: '?', action: () => this.showShortcuts() }];
+      return [
+        { label: 'Keyboard Shortcuts', shortcut: '?', action: () => this.showShortcuts() },
+        { label: 'Welcome Tour', action: () => this.runOnboarding({ dismissible: true }) },
+      ];
     },
     rotate(dir) {
       Catalog.targets().forEach((p) => {
