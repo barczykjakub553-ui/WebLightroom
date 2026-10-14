@@ -1,0 +1,94 @@
+# ------------------------------------------------------------
+# WebLightroom — static HTML/CSS/JS app + tiny Python dev server
+# ------------------------------------------------------------
+
+# --- Photos & exports (test material, never commit originals/outputs) ---
+/photos/
+/samples/
+/test-images/
+/export/
+/exports/
+/output/
+*.cr2
+*.cr3
+*.nef
+*.arw
+*.dng
+*.raf
+*.orf
+*.rw2
+*.xmp
+
+# --- Python (serve.py) ---
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.python-version
+
+# --- Node (in case tooling is added later) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.pnpm-store/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+coverage/
+
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Logs & temp files ---
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+# --- Editors / IDEs ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+.history/
+
+# --- Claude Code: keep shared config, ignore personal/local state ---
+.claude/settings.local.json
+.claude/*.local.*
+.claude/todos/
+.claude/worktrees/
+
+# --- OS junk ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
