@@ -495,7 +495,7 @@
       const c = document.createElement('canvas');
       c.width = bmp.width; c.height = bmp.height;
       const x = c.getContext('2d', { willReadFrequently: true });
-      x.drawImage(bmp, 0, 0);
+      x.drawImage(bmp.drawable || bmp, 0, 0);
       this.sample = { blobId: p.blobId, ctx: x, w: c.width, h: c.height };
       return this.sample;
     }
@@ -560,7 +560,7 @@
     const sc = Math.min(1, 400 / Math.max(bmp.width, bmp.height));
     c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
     const x = c.getContext('2d');
-    x.drawImage(bmp, 0, 0, c.width, c.height);
+    x.drawImage(bmp.drawable || bmp, 0, 0, c.width, c.height);
     const d = x.getImageData(0, 0, c.width, c.height).data;
     const out = {};
     if (which.includes('wb')) {

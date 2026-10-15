@@ -97,7 +97,7 @@
       this.filmstrip = h('footer.filmstrip', null, h('div.edge-h', { title: 'Show/Hide Filmstrip', onclick: () => this.togglePanel('bottom') }, h('span.edge-tri')), this.fsHead, this.fsStrip);
       this.progress = h('div.progress', null, h('div.progress-label'), h('div.progress-bar', null, h('div.progress-fill')));
       this.dropOverlay = h('div.drop-overlay', null, h('div', { text: 'Drop photos to import' }));
-      this.fileInput = h('input', { type: 'file', multiple: true, accept: 'image/*', style: { display: 'none' } });
+      this.fileInput = h('input', { type: 'file', multiple: true, accept: 'image/*,' + LR.Raw.ACCEPT, style: { display: 'none' } });
       this.folderInput = h('input', { type: 'file', multiple: true, webkitdirectory: true, style: { display: 'none' } });
       [this.fileInput, this.folderInput].forEach((inp) => inp.addEventListener('change', () => { if (inp.files.length) Catalog.importFiles(inp.files); inp.value = ''; }));
       this.lights = h('div.lights-out');

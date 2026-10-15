@@ -186,7 +186,7 @@
       start() {
         const act = (ic, title, desc, fn, primary) => h('button.ob-action' + (primary ? '.primary' : ''), { type: 'button', onclick: fn }, icon(ic), h('div', null, h('strong', { text: title }), h('span', { text: desc })));
         return h('div', null,
-          head('// First roll', `Ready${data.name.trim() ? ', ' + data.name.trim().split(/\s+/)[0] : ''}.`, 'Bring in your first photos. JPEG, PNG, WebP and AVIF are supported; you can also drop files anywhere in the window.'),
+          head('// First roll', `Ready${data.name.trim() ? ', ' + data.name.trim().split(/\s+/)[0] : ''}.`, 'Bring in your first photos. Camera RAW (CR2, CR3, NEF, ARW, DNG, RAF…), JPEG, PNG, WebP and AVIF are supported; you can also drop files anywhere in the window.'),
           h('div.ob-actions', null,
             act('import', 'Import photos…', 'Pick individual files from your disk.', () => finish('files'), true),
             act('stack', 'Import a folder…', 'Bring in a whole shoot at once.', () => finish('folder')),

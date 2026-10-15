@@ -440,7 +440,7 @@ void main(){
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
 
-    /** source: ImageBitmap / canvas. fullLong = long edge of the original file (for scale-aware effects). */
+    /** source: ImageBitmap / canvas, or a decoded RAW from LR.Raw ({ width, height, half }). fullLong = long edge of the original file (for scale-aware effects). */
     setImage(source, fullLong) {
       const gl = this.gl;
       if (this.src) gl.deleteTexture(this.src);
@@ -449,7 +449,13 @@ void main(){
       this.fullLong = fullLong || Math.max(source.width, source.height);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
       gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-      this.src = this._tex(source.width, source.height, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      if (source.half) {
+        // RAW: sRGB-encoded half floats; values above 1.0 carry recoverable highlights
+        gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+        this.src = this._tex(source.width, source.height, gl.RGBA16F, gl.RGBA, gl.HALF_FLOAT, source.half);
+      } else {
+        this.src = this._tex(source.width, source.height, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      }
       this._buildBlurs();
       this.sharpRadius = -1;
     }

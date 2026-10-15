@@ -207,20 +207,31 @@
   /* ---------- import ---------- */
   const ACCEPT = /^image\/(jpeg|png|webp|gif|bmp|avif)$/;
   async function importFiles(files) {
-    files = [...files].filter((f) => ACCEPT.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(f.name));
-    if (!files.length) { UI.toast('No supported images (JPEG, PNG, WebP, AVIF, GIF, BMP)'); return; }
+    files = [...files].filter((f) => ACCEPT.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(f.name) || LR.Raw.isRaw(f.name));
+    if (!files.length) { UI.toast('No supported images (RAW, JPEG, PNG, WebP, AVIF, GIF, BMP)'); return; }
+    if (files.some((f) => LR.Raw.isRaw(f.name)) && !LR.Raw.supported()) {
+      UI.toast('RAW files need cross-origin isolation — run Stopbath with "python serve.py"', 5000);
+      files = files.filter((f) => !LR.Raw.isRaw(f.name));
+      if (!files.length) return;
+    }
     const batch = UI.uid();
     let firstId = null, n = 0;
     LR.bus.emit('progress', { label: 'Importing', done: 0, total: files.length });
     for (const f of files) {
       try {
-        const bmp = await createImageBitmap(f);
-        const exif = /jpe?g/i.test(f.type) || /\.jpe?g$/i.test(f.name) ? await LR.Exif.read(f) : {};
+        let width, height, exif;
+        if (LR.Raw.isRaw(f.name)) {
+          ({ width, height, exif } = await LR.Raw.inspect(f));
+        } else {
+          const bmp = await createImageBitmap(f);
+          width = bmp.width; height = bmp.height;
+          bmp.close();
+          exif = /jpe?g/i.test(f.type) || /\.jpe?g$/i.test(f.name) ? await LR.Exif.read(f) : {};
+        }
         const blobId = UI.uid();
         await DB.put('blobs', { id: blobId, blob: f });
         const capture = LR.Exif.parseDate(exif.dateTimeOriginal || exif.dateTime) || f.lastModified || Date.now();
-        const p = newPhotoRecord({ blobId, name: f.name, size: f.size, type: f.type, width: bmp.width, height: bmp.height, exif, captureTime: capture, importBatch: batch });
-        bmp.close();
+        const p = newPhotoRecord({ blobId, name: f.name, size: f.size, type: f.type || 'image/x-raw', width, height, exif, captureTime: capture, importBatch: batch });
         state.photos.push(p);
         state.byId.set(p.id, p);
         await DB.put('photos', p);
@@ -271,9 +282,15 @@
     }
     const blob = await getBlob(p);
     if (!blob) throw new Error('Original file missing from catalog');
-    const sc = Math.min(1, maxLong / Math.max(p.width, p.height));
-    const opts = sc < 1 ? { resizeWidth: Math.max(1, Math.round(p.width * sc)), resizeHeight: Math.max(1, Math.round(p.height * sc)), resizeQuality: 'high' } : {};
-    const prom = createImageBitmap(blob, opts);
+    let prom;
+    if (LR.Raw.isRaw(p.name)) {
+      prom = LR.Raw.decode(blob, maxLong, p.blobId, { w: p.width, h: p.height });
+    } else {
+      const sc = Math.min(1, maxLong / Math.max(p.width, p.height));
+      const opts = sc < 1 ? { resizeWidth: Math.max(1, Math.round(p.width * sc)), resizeHeight: Math.max(1, Math.round(p.height * sc)), resizeQuality: 'high' } : {};
+      prom = createImageBitmap(blob, opts);
+    }
+    prom.catch(() => bitmapCache.delete(key)); // don't cache failures
     bitmapCache.set(key, prom);
     while (bitmapCache.size > 6) {
       const k = bitmapCache.keys().next().value;

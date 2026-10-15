@@ -24,7 +24,7 @@
       this.gridWrap = h('div.grid-wrap', null, this.grid);
       this.empty = h('div.empty-state', null,
         h('div.empty-title', { text: 'No photos here yet' }),
-        h('div.empty-sub', { text: 'Drop JPEG / PNG / WebP files anywhere in the window, or:' }),
+        h('div.empty-sub', { text: 'Drop RAW, JPEG, PNG or WebP files anywhere in the window, or:' }),
         h('div.row-gap', null,
           h('button.btn.primary', { text: 'Import Photos…', onclick: () => LR.App.openImport() }),
           h('button.btn', { text: 'Add Sample Photos', onclick: () => Catalog.importSamples() })));

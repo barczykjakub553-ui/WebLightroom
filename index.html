@@ -10,11 +10,20 @@
   <link rel="stylesheet" href="css/onboarding.css">
 </head>
 <body>
+  <script>
+    // RAW decoding needs cross-origin isolation. serve.py sends the headers; on hosts that can't,
+    // a tiny service worker adds them (one reload on the first visit).
+    if (!window.crossOriginIsolated && window.isSecureContext && 'serviceWorker' in navigator && !sessionStorage.getItem('coi-reload')) {
+      sessionStorage.setItem('coi-reload', '1');
+      navigator.serviceWorker.register('coi-sw.js').then(() => navigator.serviceWorker.ready).then(() => location.reload()).catch(() => {});
+    }
+  </script>
   <script src="js/ui.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/presets.js"></script>
   <script src="js/db.js"></script>
   <script src="js/exif.js"></script>
+  <script src="js/raw.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/histogram.js"></script>
   <script src="js/catalog.js"></script>

@@ -19,7 +19,8 @@ Zdjęcia, edycje, kolekcje i presety zapisują się w IndexedDB przeglądarki (l
 ## Funkcje
 
 **Library**
-- Import przez przycisk, folder albo drag & drop (JPEG, PNG, WebP, AVIF, GIF, BMP), odczyt EXIF
+- Import przez przycisk, folder albo drag & drop: pliki RAW (CR2, CR3, NEF, ARW, DNG, RAF, ORF, RW2 i inne obsługiwane przez LibRaw) oraz JPEG, PNG, WebP, AVIF, GIF, BMP; odczyt EXIF
+- RAW: dekodowanie LibRaw (WebAssembly, `vendor/libraw`) do 16-bit liniowego RGB z balansem bieli aparatu, krzywa bazowa jak w JPEG z aparatu i zapas w światłach (tekstura half-float) — prześwietlenia można odzyskać suwakami Exposure / Highlights
 - Siatka (Grid) i Loupe, filmstrip, nakładka info (I), zoom i przesuwanie
 - Oceny 0–5, flagi Pick/Reject, kolorowe etykiety, Quick Collection, kolekcje (przeciągnij zdjęcia na kolekcję)
 - Library Filter: tekst, flaga, ocena (≥ / = / ≤), etykieta, edytowane/nieedytowane; sortowanie
@@ -57,7 +58,8 @@ Pełną listę skrótów pokazuje `?` w aplikacji.
 
 ## Ograniczenia
 
-- Pliki RAW (CR2, NEF, ARW, DNG…) nie są obsługiwane: przeglądarka nie dekoduje ich natywnie.
+- RAW wymaga izolacji cross-origin (`SharedArrayBuffer` dla wątków dekodera). `serve.py` wysyła nagłówki COOP/COEP; na hostingu statycznym (np. GitHub Pages) robi to `coi-sw.js` (jedno przeładowanie przy pierwszej wizycie). Otwarcie `index.html` prosto z dysku działa, ale bez RAW.
+- Profil kolorów RAW to standardowa macierz LibRaw (bez profili DCP / obiektywów).
 - Podgląd jest ograniczony do 4096 px po dłuższym boku; eksport do 8192 px (albo do limitu tekstur GPU, jeśli jest niższy).
 - Do eksportu nie są dopisywane metadane EXIF.
 - Nie ma narzędzi Healing / Red Eye ani modułów Map / Book / Print.
